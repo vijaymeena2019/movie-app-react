@@ -1,11 +1,11 @@
 import _ from 'lodash';  // underscore library
-import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';   // npm install prop-types@15.6.2
 const Pagination = ({onPageChange, itemsCount, pageSize, currentPage}) => {
   const itemPerPage = Math.ceil(itemsCount/pageSize);
-  console.log(itemPerPage);
+  // console.log(itemPerPage);
 
   const pages = _.range(1, itemPerPage + 1)   // need to clearify why floting and intiger works fine here // because it can not include last item
-  console.log(pages)
+  // console.log(pages)
 
     return (
         <div>
