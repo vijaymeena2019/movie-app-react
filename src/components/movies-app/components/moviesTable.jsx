@@ -1,8 +1,9 @@
-import Like from './like';
+import Like from './common/like';
 import React,{Component} from 'react';
 // import TableHeader from './tableHeader';
 // import TableBody from './tableBody';
-import Table from './table.jsx'
+import Table from './common/table.jsx';
+import {Link} from 'react-router-dom';
 
 // column: array
 // onSort : function
@@ -19,7 +20,9 @@ class MoivesTable extends Component {
     //      else this.props.onShort({ path, order:'asc'})
     // }
 
-    columns = [  {path:'title', label: "Title"},
+    columns = [  {path:'title',
+     label: "Title",
+      content: movieData =><Link to={`/movies/${movieData._id}`}>{movieData.title}</Link>},
                 {path:'genre.name', label: "Genre"},
                 {path:'numberInStock', label: "Stock"},
                 {path:'dailyRentalRate', label: "Rate"},

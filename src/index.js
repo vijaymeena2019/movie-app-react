@@ -1,8 +1,11 @@
-import React from  'react';
-import ReactDOM from 'react-dom/client';
-import App from './app';
+import React from 'react';
+import ReactDOM from 'react-dom';
 import './index.css';
+import {BrowserRouter} from 'react-router-dom';
+import App from './App';
+import registerServiceWorker from './registerServiceWorker';
 import 'bootstrap/dist/css/bootstrap.min.css';  // adding css
 import 'font-awesome/css/font-awesome.css';
 
-ReactDOM.createRoot(document.querySelector('#root')).render(<App/>)
+ReactDOM.render(<BrowserRouter><App /></BrowserRouter>, document.getElementById('root'));
+registerServiceWorker();

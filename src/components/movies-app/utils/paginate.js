@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import React from 'react';
 
 export default function paginate (items, pageNumber, pageSize) {
     

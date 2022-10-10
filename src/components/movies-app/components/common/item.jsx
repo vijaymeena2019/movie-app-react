@@ -1,6 +1,6 @@
 // import React, {Component} from 'react';
 // import {render} from 'react-dom';
-
+import React from 'react';
 const Item = ({ index, onDetele, item, onIncrease, onDecrease }) => {   // single source of truth
     return (  // event raiser
                 <div>

@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-
+import React from 'react';
 
 const GroupList = ({textProperty, valueProperty, genresData, onGenres, currentGenre}) => {
     // console.log(currentGenre);

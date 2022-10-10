@@ -1,4 +1,5 @@
 import _ from 'lodash';  // underscore library
+import React from 'react';
 import PropTypes from 'prop-types';   // npm install prop-types@15.6.2
 const Pagination = ({onPageChange, itemsCount, pageSize, currentPage}) => {
   const itemPerPage = Math.ceil(itemsCount/pageSize);

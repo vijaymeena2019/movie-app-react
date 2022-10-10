@@ -1,4 +1,4 @@
-
+import React from 'react';
 
 const Navbar = ({onTotalItems, onTotalProducts}) => {  // {onSum}  {onSum()}
     return (

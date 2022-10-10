@@ -1,5 +1,5 @@
 import Item from './item';
-
+import React from 'react';
 const Items = ({onIncrease, onDecrease, onDetele, onReset, products}) => {
     
         return (

@@ -1,15 +1,18 @@
 import React, {Component} from 'react';
+import App from '../../App';
 import Items from './items';
 import Navbar from './navbar';
-import Movies from './movies';
-import {getMovies} from './movie services/fakeMovieService';
-import paginate from './utils/paginate';
-import {getGenres} from './movie services/fakeGenreService';
+import Movies from '../movies';
+import {getMovies} from '../services/fakeMovieService';
+import paginate from '../utils/paginate';
+import {getGenres} from '../services/fakeGenreService';
 import _ from 'lodash';
+import {Link} from 'react-router-dom';
 
 
 
-class App extends Component {
+class MoviesApp extends Component {
+
     constructor () {
         super();
         this.state = {
@@ -99,10 +102,10 @@ class App extends Component {
 
     }
 
-    componentDidMount () { // Orignally We initallise these via backend servieces 
-        const genresData =  [{ _id: "",name: 'All Genres'}, ...getGenres()]
-        this.setState({ moviesData: getMovies(), genresData: genresData})
-    }
+    // componentDidMount () { // Orignally We initallise these via backend servieces 
+    //     const genresData =  [{ _id: "",name: 'All Genres'}, ...getGenres()]
+    //     this.setState({ moviesData: getMovies(), genresData: genresData})
+    // }
 
     handleLike = movieData => {
 
@@ -206,11 +209,14 @@ class App extends Component {
         return { totalCount: filtered.length , data: paginateFilteredMovies, filtered: filtered}
     }
 
+
+
     
 
     render () {
 
-        const {totalCount, data, filtered} = this.getPagedData();
+        const {totalCount, data, filtered} = this.props.getPagedData();
+        console.log("filtered",filtered)
         // filter > sort > paginate
 
 
@@ -232,7 +238,7 @@ class App extends Component {
                     products={this.state.products}
                     />
                 </main>   */}
-        
+                <Link className="btn btn-primary" to="/movies/new">Add New Movie</Link>
                 < Movies 
             //    moviesData = {this.state.currentGenre === "All Genres" ? this.state.moviesData : this.state.moviesData.filter(movie => movie.genre.name === this.state.currentGenre.name)}
                 moviesData = {filtered}
@@ -241,20 +247,20 @@ class App extends Component {
                 filteredMoviesData = {data}
 
 
-                onMovieDelete = {this.handleMovieDelete} // compulsary
-                onPageChange = {this.handlePageChange} // compulsary
-                onLike = {this.handleLike} // compulsary
-                pageSize = {this.state.pageSize}  // compulsary
-                currentPage = {this.state.currentPage} // compulsary
-                genresData = {this.state.genresData}  // compulsary
-                onGenres = {this.handleCurrentGenre}  // compulsary
-                currentGenre = {this.state.currentGenre}   // compusory
-                onShort = {this.handleShort}
-                shortColumn= {this.state.shortColumn}
+                onMovieDelete = {this.props.handleMovieDelete} // compulsary
+                onPageChange = {this.props.handlePageChange} // compulsary
+                onLike = {this.props.handleLike} // compulsary
+                pageSize = {this.props.pageSize}  // compulsary
+                currentPage = {this.props.currentPage} // compulsary
+                genresData = {this.props.genresData}  // compulsary
+                onGenres = {this.props.handleCurrentGenre}  // compulsary
+                currentGenre = {this.props.currentGenre}   // compusory
+                onShort = {this.props.handleShort}
+                shortColumn= {this.props.shortColumn}
                 />
             </div>
         )
     }
 }
 
-export default App;
+export default MoviesApp;

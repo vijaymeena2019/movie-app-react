@@ -1,6 +1,7 @@
 // import Like from './like';
 import _ from 'lodash';
-
+import React from 'react';
+//import {Link} from 'react-router-dom';
 function renderCell (item, column) {
     if (column.content) return column.content(item)
 
@@ -14,6 +15,7 @@ export default function TableBody ({data, columns}) {
         <tbody>
             {data.map((item,index) => <tr key={index}>
                 {columns.map((column,index) => <td key={index}>{renderCell(item,column)}</td>)}
+                {/*my solution <td key={index}>{column.path === "title" ? <Link to= {`/movies/${item._id}`}>{renderCell(item,column)}</Link> : renderCell(item,column)}</td>)} */}
                 {/* item[column.path] works for simple properties and not works for genre.name or nested properties, so we use lodash _.get(object, target property(that can be nested)) */}
                 {/* {<td></td>}    <td> is based on how  many number of column we have, so we need to provide column information */}
             </tr>

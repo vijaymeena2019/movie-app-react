@@ -1,6 +1,6 @@
 import TableBody from "./tableBody";
 import TableHeader from "./tableHeader";
-
+import React from 'react';
 
 const Table = ({data, columns, onShort, shortColumn}) => {
     return (
