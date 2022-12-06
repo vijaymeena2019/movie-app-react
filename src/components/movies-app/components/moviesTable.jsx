@@ -4,6 +4,7 @@ import React,{Component} from 'react';
 // import TableBody from './tableBody';
 import Table from './common/table.jsx';
 import {Link} from 'react-router-dom';
+import { getCurrentUser } from '../services/userService';
 
 // column: array
 // onSort : function
@@ -19,23 +20,56 @@ class MoivesTable extends Component {
     //      }
     //      else this.props.onShort({ path, order:'asc'})
     // }
+    
+    getColumns () {
+        console.log(getCurrentUser());
+        const  {isAdmin} = getCurrentUser() || ""  ; // getCurrentUser() do  not have isAdmin it will gives empty string and is it has getCurrentUser()
+        console.log('isAdmin', isAdmin);
+        if (isAdmin) {
+            return  [  {path:'title',
+                            label: "Title",
+                            content: movieData =><Link to={`/movies/${movieData._id}`}>{movieData.title}</Link>
+                        },
+                       {path:'genre.name', label: "Genre"},
+                       {path:'numberInStock', label: "Stock"},
+                       {path:'dailyRentalRate', label: "Rate"},
+                       { content:  movieData => <Like like={movieData.like} onClick={()=>this.props.onLike(movieData)}/>}, // like button
+                       { content: movieData => <button onClick={()=> this.props.onMovieDelete(movieData)} className='btn btn-danger m-2'>Detele</button>} // delete button
+                   ]
+        }
 
-    columns = [  {path:'title',
-     label: "Title",
-      content: movieData =><Link to={`/movies/${movieData._id}`}>{movieData.title}</Link>},
-                {path:'genre.name', label: "Genre"},
-                {path:'numberInStock', label: "Stock"},
-                {path:'dailyRentalRate', label: "Rate"},
-                { content:  movieData => <Like like={movieData.like} onClick={()=>this.props.onLike(movieData)}/>}, // like button
-                { content: movieData => <button onClick={()=> this.props.onMovieDelete(movieData)} className='btn btn-danger m-2'>Detele</button>} // delete button
-            ]
+        return [  {path:'title',
+                    label: "Title",
+                    content: movieData =><Link to={`/movies/${movieData._id}`}>{movieData.title}</Link>
+                },
+                   {path:'genre.name', label: "Genre"},
+                   {path:'numberInStock', label: "Stock"},
+                   {path:'dailyRentalRate', label: "Rate"},
+                   { content:  movieData => <Like like={movieData.like} onClick={()=>this.props.onLike(movieData)}/>}, // like button
+                //    { content: movieData => <button onClick={()=> this.props.onMovieDelete(movieData)} className='btn btn-danger m-2'>Detele</button>} // delete button
+               ]
+       
+
+        }
+    
+
+    // columns = [  {path:'title',
+    //  label: "Title",
+    //   content: movieData =><Link to={`/movies/${movieData._id}`}>{movieData.title}</Link>},
+    //             {path:'genre.name', label: "Genre"},
+    //             {path:'numberInStock', label: "Stock"},
+    //             {path:'dailyRentalRate', label: "Rate"},
+    //             { content:  movieData => <Like like={movieData.like} onClick={()=>this.props.onLike(movieData)}/>}, // like button
+    //             { content: movieData => <button onClick={()=> this.props.onMovieDelete(movieData)} className='btn btn-danger m-2'>Detele</button>} // delete button
+    //         ]
     
     
     
     render () {
-        const {filteredMoviesData, onLike, onMovieDelete, onShort, shortColumn} = this.props
+        const { filteredMoviesData, onLike, onMovieDelete, onShort, shortColumn} = this.props
+        const columns = this.getColumns();
     return (
-        < Table data={filteredMoviesData} columns={this.columns} onShort= {onShort} shortColumn= {shortColumn}/>
+        < Table data={filteredMoviesData} columns={columns} onShort= {onShort} shortColumn= {shortColumn}/>
         
         
         // <table className="table table-hover">

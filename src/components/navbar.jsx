@@ -1,20 +1,45 @@
 import React from "react";
 import { NavLink, Link } from "react-router-dom";
-const NavBar = () => {
+const NavBar = ({user}) => {
   return (
     <nav className="navbar navbar-expand-lg bg-light">
   {/* <div className="container-fluid"> */}
-    <Link className="navbar-brand" to="/">Vidly App</Link>
+    <Link className="navbar-brand" to="/">New App</Link>
     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
       <span className="navbar-toggler-icon"></span>
     </button>
     <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div className="navbar-nav">
-        <NavLink className="nav-item nav-link" aria-current="page" to="/movies">Movies</NavLink>
-        <NavLink className="nav-item nav-link" to="/details/customers">Customers</NavLink>
-        <NavLink className="nav-item nav-link" to="/rates/rentals">Rentals</NavLink>
-        <Link className="nav-item nav-link" to="/login">Login</Link>
-        <Link className="nav-item nav-link" to="/register">Register</Link>
+        <Link className="nav-item nav-link" aria-current="page" to="/movies">Movies</Link>
+        {
+            user &&
+            (<React.Fragment>
+            <Link className="navbar-brand" to="/profile">{user.name}</Link>
+            <Link className="navbar-brand" to="/logout">logout</Link>
+            </React.Fragment>)
+          }
+          {
+            !user &&
+            (<React.Fragment>
+            <Link className="nav-item nav-link" to="/login">Login</Link>
+            <Link className="nav-item nav-link" to="/register">Register</Link>
+            </React.Fragment>)
+          }
+        
+        {/* // self
+        {
+          user ?
+          <React.Fragment>
+          <Link className="navbar-brand" to="/">{user.name}</Link>
+          <Link className="navbar-brand" to="/">logout</Link>
+          </React.Fragment>
+          :
+          <React.Fragment>
+          <Link className="nav-item nav-link" to="/login">Login</Link>
+          <Link className="nav-item nav-link" to="/register">Register</Link>
+          <Link className="navbar-brand" to="/">Annonamous User</Link>
+          </React.Fragment>
+        } */}
       </div>
     </div>
   {/* </div> */}

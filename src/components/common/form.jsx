@@ -16,9 +16,11 @@ class Form extends Component {
         errors: {}
     };
 
+    // schema is mention in movieForm.jsx
+
     handleSubmit = event => { 
 
-        event.preventDefault();   // it will reload page
+        event.preventDefault();   // it will stop reload page
 
         const errors = this.validateForm();
         // console.log(errors);
@@ -40,7 +42,7 @@ class Form extends Component {
         //console.log(...errorMessage, "these char are not allowed in username")
         const data = {...this.state.data};
         data[target.name] = target.value;   // [] when we do not the target property name and we are going  to  work dynamically, we use bracket notation
-        this.setState({data, errors})
+        this.setState({data, errors});
     }
 
 
@@ -57,7 +59,6 @@ class Form extends Component {
             errors[item.path[0]] = item.message
         }
         return errors
-        
     }
 
     validateProperty = ({name, value}) => { // reuseable  // validate one target

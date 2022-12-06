@@ -7,11 +7,12 @@ import MoivesTable from './components/moviesTable';
 import React, {Component} from 'react';
 import Items from './components/common/items';
 import Navbar from './components/common/navbar';
-import {getMovies} from './services/fakeMovieService';
+import {getMovies, deleteMovie} from './services/movieService';
 import paginate from './utils/paginate';
-import {getGenres} from './services/fakeGenreService';
+import {getGenres} from './services/genreService';
 import _ from 'lodash';
 import {Link} from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 
 class Movies extends Component { 
@@ -79,13 +80,22 @@ class Movies extends Component {
                 this.setState({products:products})
             }
         
-            handleMovieDelete = movieData => {
-                console.log('in handlemovie delete')
-                
+            handleMovieDelete = async movie => {
+                const orignalMovies = [...this.state.moviesData];
                 const moviesData = [...this.state.moviesData];
-                const index = moviesData.indexOf(movieData)
+                const index = orignalMovies.indexOf(movie)
                 moviesData.splice(index,1);
                 this.setState({moviesData})
+
+                try {
+                    console.log("deleting...movie", movie)
+                    await deleteMovie(movie._id);
+                } 
+                catch (ex) {
+                    if (ex.response && ex.response.status === 404) toast("This movie is already been deleted");
+                
+                    this.setState({ moviesData: orignalMovies})
+                }
             }
         
             handlePagination = () => {
@@ -105,9 +115,12 @@ class Movies extends Component {
         
             }
         
-            componentDidMount () { // Orignally We initallise these via backend servieces 
-                const genresData =  [{ _id: "",name: 'All Genres'}, ...getGenres()]
-                this.setState({ moviesData: getMovies(), genresData: genresData})
+            async componentDidMount () { // Orignally We initallise these via backend servieces 
+                const { data: genres } = await getGenres();
+                // const genres = await res.json();
+                const genresData =  [{ _id: "",name: 'All Genres'}, ...genres]
+                const { data: movies} = await getMovies();
+                this.setState({ moviesData: movies, genresData: genresData})
             }
         
             handleLike = movieData => {
@@ -218,7 +231,7 @@ class Movies extends Component {
      
     render () {
        // const {shortColumn, currentGenre, genresData, onGenres, filteredMoviesData, moviesData, onMovieDelete, onPageChange, onLike, pageSize, currentPage, onShort} 
-        
+        const { user} = this.props;
         
         const {totalCount, data, filtered} = this.getPagedData();
         console.log("filtered",filtered)
@@ -229,7 +242,9 @@ class Movies extends Component {
         
         return (
             <React.Fragment>
+                { user &&
             <Link className="btn btn-primary" to="/movies/new">Add New Movie</Link>
+                }
             <div className="row">
             
                 <div className='col-2'>

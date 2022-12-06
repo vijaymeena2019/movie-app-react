@@ -7,5 +7,6 @@ import registerServiceWorker from './registerServiceWorker';
 import 'bootstrap/dist/css/bootstrap.min.css';  // adding css
 import 'font-awesome/css/font-awesome.css';
 
-ReactDOM.render(<BrowserRouter><App /></BrowserRouter>, document.getElementById('root'));
+const root = ReactDOM.createRoot(document.querySelector('#root'));
+root.render(<BrowserRouter><App /></BrowserRouter>);
 registerServiceWorker();

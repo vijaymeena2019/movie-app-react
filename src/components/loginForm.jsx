@@ -1,7 +1,10 @@
 import React, {Component} from 'react';
 import Input from '../components/common/input';
 import Joi from 'joi-browser';
-import Form from '../components/common/form'
+import Form from '../components/common/form';
+import { auth, getCurrentUser, login } from './movies-app/services/userService';
+import { toast } from 'react-toastify';
+import { Redirect } from 'react-router-dom';
 
 
 
@@ -12,7 +15,10 @@ class LoginForm extends Form {
     // null and undefined considered as uncontrolled component in react
 
     state = {
-        data : { username:"", password: ''}
+        data : { 
+            email:"",
+            password: ''
+        }
         ,
         errors : {}
         // ,
@@ -20,26 +26,40 @@ class LoginForm extends Form {
     }
 
     schema = {
-        username: Joi.string().required().label('Username'),
+        email: Joi.string().email().required().label('Email'),
         password: Joi.string().required().label("Password")
     }
 
-    doSubmit = () => {
-
+    doSubmit = async () => {
         // Call the server
-        console.log('form submitted')
-    
-    
+        
+        try{
+           const userCredential = this.state.data;
+           await login(userCredential);
+           const {state} = this.props.location;
+           window.location = state ? state.from.pathname : "/" // this will reload full page so our app component mounted again 
+           toast.success("You have been successfully login")
+        }
+
+        catch (ex) {
+            if (ex.response && ex.response.status === 400) {
+                const errors = {...this.state.errors};
+                errors.email = ex.response.data;
+                this.setState({ errors })
+            }
+        }
         }
 
         render () {
+            // We have impliment this in App.js <Route>,we Redirect to home while user alredy logged in but 2nd way is like-
+            // if (getCurrentUser()) return <Redirect to="/" />;
             return (
                 <React.Fragment>
                 <div>
                     <h1>Login</h1>
                 </div>
                 <form onSubmit={this.handleSubmit}>
-                {this.renderInput('username',"Username",'text')}
+                {this.renderInput('email',"Email")}
                 {this.renderInput('password',"Password", 'password')}
                 {this.renderButton("Login")}
                 </form>
